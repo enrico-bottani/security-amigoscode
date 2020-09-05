@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 import static com.enricobottani.securityamigoscode.secuirty.UserPermission.*;
 
 public enum UserRole {
-
     STUDENT(new HashSet<>()),
     ADMIN(Sets.newHashSet(COURSE_READ, COURSE_WRITE, STUDENT_READ, STUDENT_WRITE)),
     ADMIN_TRAINEE(Sets.newHashSet(COURSE_READ, STUDENT_READ));
@@ -27,11 +26,11 @@ public enum UserRole {
     }
 
     public Set<SimpleGrantedAuthority> getGrantedAuthorities() {
-        var permissions = getPermissions()
+        return getPermissions()
                 .stream()
                 .map((p) -> new SimpleGrantedAuthority(p.getPermission()))
                 .collect(Collectors.toSet());
-        permissions.add(new SimpleGrantedAuthority("ROLE_"+this.name()));
-        return permissions;
+        //permissions.add(new SimpleGrantedAuthority("ROLE_"+this.name()));
+       // return permissions;
     }
 }

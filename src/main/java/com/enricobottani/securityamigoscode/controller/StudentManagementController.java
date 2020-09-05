@@ -3,6 +3,7 @@ package com.enricobottani.securityamigoscode.controller;
 import com.enricobottani.securityamigoscode.model.Student;
 import com.enricobottani.securityamigoscode.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
