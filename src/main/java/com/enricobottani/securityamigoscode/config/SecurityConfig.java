@@ -1,5 +1,6 @@
 package com.enricobottani.securityamigoscode.config;
 
+import com.enricobottani.securityamigoscode.secuirty.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -38,8 +39,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         UserDetails annaSmithUser = User.builder()
                 .username("annasmith")
                 .password(passwordEncoder.encode("password"))
-                .roles("STUDENT") //ROLE_STUDENT
+                .roles(UserRole.STUDENT.name()) // ROLE_STUDENT
                 .build();
-        return new InMemoryUserDetailsManager(annaSmithUser);
+        UserDetails lindaUser = User.builder()
+                .username("linda")
+                .password(passwordEncoder.encode("password123"))
+                .roles(UserRole.ADMIN.name()) // ROLE_ADMIN
+                .build();
+        return new InMemoryUserDetailsManager(annaSmithUser, lindaUser);
     }
 }
