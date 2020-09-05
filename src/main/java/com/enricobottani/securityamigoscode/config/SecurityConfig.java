@@ -1,9 +1,11 @@
 package com.enricobottani.securityamigoscode.config;
 
+import com.enricobottani.securityamigoscode.secuirty.UserPermission;
 import com.enricobottani.securityamigoscode.secuirty.UserRole;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -13,15 +15,18 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
-import static com.enricobottani.securityamigoscode.secuirty.UserRole.STUDENT;
+import static com.enricobottani.securityamigoscode.secuirty.UserPermission.COURSE_READ;
+import static com.enricobottani.securityamigoscode.secuirty.UserPermission.COURSE_WRITE;
+import static com.enricobottani.securityamigoscode.secuirty.UserRole.*;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PasswordEncoder passwordEncoder;
+
     @Autowired
-    public SecurityConfig(PasswordEncoder passwordEncoder){
+    public SecurityConfig(PasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -30,8 +35,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/","/index.html","/css/*","/js/*").permitAll()
+                .antMatchers("/", "/index.html", "/css/*", "/js/*").permitAll()
                 .antMatchers("/api/**").hasRole(STUDENT.name())
+                .antMatchers(HttpMethod.DELETE, "/management/api/**").hasAuthority(COURSE_WRITE.getPermission())
+                .antMatchers(HttpMethod.POST, "/management/api/**").hasAuthority(COURSE_WRITE.getPermission())
+                .antMatchers(HttpMethod.PUT, "/management/api/**").hasAuthority(COURSE_WRITE.getPermission())
+                .antMatchers(HttpMethod.GET, "/management/api/**").hasAuthority(COURSE_READ.getPermission())
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
@@ -44,16 +53,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .username("anna@gmail.com")
                 .password(passwordEncoder.encode("1234"))
                 .roles(STUDENT.name()) // ROLE_STUDENT
+                .authorities(STUDENT.getGrantedAuthorities())
                 .build();
         UserDetails lindaUser = User.builder()
                 .username("linda@supsi.com")
                 .password(passwordEncoder.encode("1234"))
-                .roles(UserRole.ADMIN.name()) // ROLE_ADMIN
+                .roles(ADMIN.name()) // ROLE_ADMIN
+                .authorities(ADMIN.getGrantedAuthorities())
                 .build();
         UserDetails tomUser = User.builder()
                 .username("tom@trainee.supsi.com")
                 .password(passwordEncoder.encode("1234"))
-                .roles(UserRole.ADMIN_TRAINEE.name()) // ROLE_ADMIN_TRAINEE
+                .roles(ADMIN_TRAINEE.name()) // ROLE_ADMIN_TRAINEE
+                .authorities(ADMIN_TRAINEE.getGrantedAuthorities())
                 .build();
         return new InMemoryUserDetailsManager(annaSmithUser, lindaUser, tomUser);
     }
