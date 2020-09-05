@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
+import static com.enricobottani.securityamigoscode.secuirty.UserRole.STUDENT;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -26,8 +28,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/","/index.html","/css/*","/js/*").permitAll()
+                .antMatchers("/api/**").hasRole(STUDENT.name())
                 .anyRequest().authenticated()
                 .and()
                 .httpBasic();
@@ -37,15 +41,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     protected UserDetailsService userDetailsService() {
         UserDetails annaSmithUser = User.builder()
-                .username("annasmith")
-                .password(passwordEncoder.encode("password"))
-                .roles(UserRole.STUDENT.name()) // ROLE_STUDENT
+                .username("anna@gmail.com")
+                .password(passwordEncoder.encode("1234"))
+                .roles(STUDENT.name()) // ROLE_STUDENT
                 .build();
         UserDetails lindaUser = User.builder()
-                .username("linda")
-                .password(passwordEncoder.encode("password123"))
+                .username("linda@supsi.com")
+                .password(passwordEncoder.encode("1234"))
                 .roles(UserRole.ADMIN.name()) // ROLE_ADMIN
                 .build();
-        return new InMemoryUserDetailsManager(annaSmithUser, lindaUser);
+        UserDetails tomUser = User.builder()
+                .username("tom@trainee.supsi.com")
+                .password(passwordEncoder.encode("1234"))
+                .roles(UserRole.ADMIN_TRAINEE.name()) // ROLE_ADMIN_TRAINEE
+                .build();
+        return new InMemoryUserDetailsManager(annaSmithUser, lindaUser, tomUser);
     }
 }
