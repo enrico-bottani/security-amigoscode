@@ -34,10 +34,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .and()
+                //.csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                //.and()
+                .csrf().disable()
+
                 .authorizeRequests()
                 .antMatchers("/", "/index.html", "/css/*", "/js/*").permitAll()
+                .antMatchers("/login").permitAll()
                 .antMatchers("/api/**").hasRole(STUDENT.name())
                 .antMatchers(HttpMethod.DELETE, "/management/api/**").hasAuthority(COURSE_WRITE.getPermission())
                 .antMatchers(HttpMethod.POST, "/management/api/**").hasAuthority(COURSE_WRITE.getPermission())
@@ -45,7 +48,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET, "/management/api/**").hasAuthority(COURSE_READ.getPermission())
                 .anyRequest().authenticated()
                 .and()
-                .httpBasic();
+                // .httpBasic();
+                .formLogin().loginPage("/login")
+                .defaultSuccessUrl("/", true);
     }
 
     @Override
