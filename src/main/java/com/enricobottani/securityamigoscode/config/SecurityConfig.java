@@ -16,6 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
+import java.util.concurrent.TimeUnit;
+
 import static com.enricobottani.securityamigoscode.secuirty.UserPermission.COURSE_READ;
 import static com.enricobottani.securityamigoscode.secuirty.UserPermission.COURSE_WRITE;
 import static com.enricobottani.securityamigoscode.secuirty.UserRole.*;
@@ -40,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                 .authorizeRequests()
                 .antMatchers("/", "/index.html", "/css/*", "/js/*").permitAll()
+                .antMatchers("/courses").permitAll()
                 .antMatchers("/login").permitAll()
                 .antMatchers("/api/**").hasRole(STUDENT.name())
                 .antMatchers(HttpMethod.DELETE, "/management/api/**").hasAuthority(COURSE_WRITE.getPermission())
@@ -50,7 +53,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 // .httpBasic();
                 .formLogin().loginPage("/login")
-                .defaultSuccessUrl("/", true);
+                .defaultSuccessUrl("/courses", true)
+                .and()
+                .rememberMe().tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30));
     }
 
     @Override

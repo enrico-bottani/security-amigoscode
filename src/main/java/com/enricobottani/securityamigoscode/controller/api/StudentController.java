@@ -1,4 +1,4 @@
-package com.enricobottani.securityamigoscode.controller;
+package com.enricobottani.securityamigoscode.controller.api;
 
 import com.enricobottani.securityamigoscode.model.Student;
 import com.enricobottani.securityamigoscode.repository.StudentRepository;

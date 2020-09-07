@@ -1,4 +1,4 @@
-package com.enricobottani.securityamigoscode.controller;
+package com.enricobottani.securityamigoscode.controller.templates;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
     @GetMapping("login")
     public String getLogin(){
-        return "/login.html";
+        return "login";
     }
-
 }

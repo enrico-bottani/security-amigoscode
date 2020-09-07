@@ -1,4 +1,4 @@
-package com.enricobottani.securityamigoscode.controller;
+package com.enricobottani.securityamigoscode.controller.api;
 
 import com.enricobottani.securityamigoscode.debug.DebugUtils;
 import com.enricobottani.securityamigoscode.model.Student;
