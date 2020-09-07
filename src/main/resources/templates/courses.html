@@ -19,12 +19,19 @@
     </div>
 </div>
 
-<div class="container-fluid mt-4 bg-whitesmoke" sec:authorize="!isAuthenticated()">
-    <div class="container p-0">
+<div class="container-fluid mt-4 bg-whitesmoke p-0" sec:authorize="!isAuthenticated()">
+    <div class="container">
         <div class="row">
             <div class="col">
                 <h2>Please <a th:href="@{/login}">login</a></h2>
             </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col mt-3">Special thanks special thanks goes to Amigoscode
+            for his awesome <a href="https://www.youtube.com/watch?v=her_7pa0vrg&t=9201s">tutorial</a>!
         </div>
     </div>
 </div>
