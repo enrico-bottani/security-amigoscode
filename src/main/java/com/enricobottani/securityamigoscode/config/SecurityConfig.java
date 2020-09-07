@@ -55,7 +55,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().loginPage("/login")
                 .defaultSuccessUrl("/courses", true)
                 .and()
-                .rememberMe().tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30));
+                .rememberMe().tokenValiditySeconds((int) TimeUnit.DAYS.toSeconds(30))
+                .and()
+                .logout().logoutUrl("/logout")
+                .clearAuthentication(true)
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID", "remember-me")
+                .logoutSuccessUrl("/login");
     }
 
     @Override
