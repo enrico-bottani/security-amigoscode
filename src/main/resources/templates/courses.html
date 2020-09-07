@@ -1,10 +1,32 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:sec="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Courses</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <link rel="stylesheet" th:href="@{/css/main.css}">
 </head>
 <body>
 <h1 sec:authorize="isAuthenticated()">Welcome back!</h1>
+<div sec:authorize="isAuthenticated()" class="container mt-4">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-5">
+            <form class="form-signin" method="post" th:action="@{/logout}">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Logout</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-4 bg-whitesmoke" sec:authorize="!isAuthenticated()">
+    <div class="container p-0">
+        <div class="row">
+            <div class="col">
+                <h2>Please <a th:href="@{/login}">login</a></h2>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
