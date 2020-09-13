@@ -1,7 +1,5 @@
 package com.enricobottani.securityamigoscode.config;
 
-import com.enricobottani.securityamigoscode.secuirty.UserPermission;
-import com.enricobottani.securityamigoscode.secuirty.UserRole;
 import com.enricobottani.securityamigoscode.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -12,18 +10,13 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import java.util.concurrent.TimeUnit;
 
 import static com.enricobottani.securityamigoscode.secuirty.UserPermission.COURSE_READ;
 import static com.enricobottani.securityamigoscode.secuirty.UserPermission.COURSE_WRITE;
-import static com.enricobottani.securityamigoscode.secuirty.UserRole.*;
+import static com.enricobottani.securityamigoscode.secuirty.UserRole.STUDENT;
 
 @Configuration
 @EnableWebSecurity
@@ -49,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/index.html", "/css/*", "/js/*").permitAll()
                 .antMatchers("/courses").permitAll()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/oauth-proxy/set-token").permitAll()
                 .antMatchers("/api/**").hasRole(STUDENT.name())
                 .antMatchers(HttpMethod.DELETE, "/management/api/**").hasAuthority(COURSE_WRITE.getPermission())
                 .antMatchers(HttpMethod.POST, "/management/api/**").hasAuthority(COURSE_WRITE.getPermission())

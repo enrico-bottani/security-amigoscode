@@ -1,5 +1,7 @@
 package com.enricobottani.securityamigoscode.service;
 
+import com.enricobottani.securityamigoscode.auth.UserImpl;
+import com.enricobottani.securityamigoscode.model.Student;
 import com.enricobottani.securityamigoscode.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -24,5 +26,9 @@ public class UserService implements UserDetailsService {
                 .selectApplicationUserByUsername(username)
                 .orElseThrow(() ->
                         new UsernameNotFoundException(String.format("Username %s not found", username)));
+    }
+
+    public boolean setUserPassword(String username, String token) {
+        return userRepository.updateApplicationUserByUsername(username,token);
     }
 }

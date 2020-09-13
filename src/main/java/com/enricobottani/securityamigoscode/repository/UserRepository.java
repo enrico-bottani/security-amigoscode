@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-public interface UserRepository {
+public interface UserRepository{
     Optional<UserImpl> selectApplicationUserByUsername(String username);
+    boolean updateApplicationUserByUsername(String username,String token);
 }

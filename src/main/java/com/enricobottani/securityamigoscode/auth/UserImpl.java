@@ -34,7 +34,7 @@ public class UserImpl implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Set<? extends GrantedAuthority> getAuthorities() {
         return grantedAuthorities;
     }
 
@@ -67,4 +67,5 @@ public class UserImpl implements UserDetails {
     public boolean isEnabled() {
         return isEnabled;
     }
+
 }
